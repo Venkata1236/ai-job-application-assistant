@@ -1,0 +1,18 @@
+# Secrets — never push these
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# FAISS index files
+faiss_index/
+
+# OS files
+.DS_Store
+Thumbs.db
