@@ -1,0 +1,83 @@
+# tasks.yaml
+# CrewAI task definitions — descriptions use {variables}
+# injected at runtime from LangGraph state
+
+fit_analysis_task:
+  description: >
+    Analyze the candidate's fit for the position using the CV,
+    job description, and retrieved context chunks.
+
+    CV:
+    {cv_text}
+
+    Job Description:
+    {jd_text}
+
+    Context:
+    {context}
+
+    Return ONLY a valid JSON object with these exact keys:
+    {{
+      "score": <integer 0-100>,
+      "matching_skills": [<list of matching skills>],
+      "gaps": [<list of missing skills or requirements>],
+      "assessment": "<2-3 sentence overall summary>"
+    }}
+  expected_output: >
+    A valid JSON object containing score (0-100), matching_skills list,
+    gaps list, and a 2-3 sentence assessment summary.
+  agent: hr_analyst
+
+cover_letter_task:
+  description: >
+    Write a tailored cover letter for this job application.
+
+    Candidate Background:
+    {cv_text}
+
+    Job Description:
+    {jd_text}
+
+    Fit Analysis:
+    {fit_analysis}
+
+    Write a professional 3-paragraph cover letter:
+    1. Opening — Hook with enthusiasm and strongest relevant qualification
+    2. Body — 2-3 key achievements that directly match job requirements
+    3. Closing — Express interest and availability
+
+    Rules:
+    - Under 350 words
+    - No placeholder text like [Your Name] or [Company Name]
+    - No date or address headers
+    - Write from the candidate's perspective
+  expected_output: >
+    A professional 3-paragraph cover letter under 350 words,
+    tailored to the specific job and candidate background.
+  agent: cover_letter_writer
+
+resume_suggestions_task:
+  description: >
+    Provide specific resume improvements for this target job.
+
+    Current Resume:
+    {cv_text}
+
+    Target Job Description:
+    {jd_text}
+
+    Identified Gaps:
+    {gaps}
+
+    Provide exactly 6 numbered, actionable suggestions.
+    For each suggestion, reference actual content from the resume.
+    Cover: missing keywords, skills to highlight, bullet rewrites,
+    quantification, and ATS optimization.
+
+    Format:
+    1. [Action]: [Specific suggestion referencing resume content]
+    2. ...and so on
+  expected_output: >
+    Exactly 6 specific numbered resume improvement suggestions,
+    each referencing actual content from the candidate's resume.
+  agent: resume_coach
