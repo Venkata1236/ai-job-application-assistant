@@ -1,3 +1,8 @@
+"""
+state.py
+Defines the LangGraph TypedDict state schema
+shared across all workflow nodes.
+"""
 from typing import TypedDict, List
 
 
