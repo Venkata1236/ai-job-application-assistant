@@ -20,27 +20,30 @@ An AI-powered job application assistant that analyzes your CV against any job de
 ---
 
 ## 🗺️ Simple Flow
+```
 User uploads CV + pastes Job Description
-↓
-Streamlit calls POST /analyze
-↓
-FastAPI triggers LangGraph workflow
-↓
-Node 1: FAISS RAG — retrieve relevant chunks
-↓
-Node 2: CrewAI HR Analyst — fit score + gaps
-↓
-Node 3: CrewAI Writer — tailored cover letter
-↓
-Node 4: CrewAI Coach — resume suggestions
-↓
-Node 5: Compile final markdown report
-↓
-Streamlit renders score + tabs + downloads
+              ↓
+     Streamlit calls POST /analyze
+              ↓
+     FastAPI triggers LangGraph workflow
+              ↓
+  Node 1: FAISS RAG — retrieve relevant chunks
+              ↓
+  Node 2: CrewAI HR Analyst — fit score + gaps
+              ↓
+  Node 3: CrewAI Writer — tailored cover letter
+              ↓
+  Node 4: CrewAI Coach — resume suggestions
+              ↓
+  Node 5: Compile final markdown report
+              ↓
+    Streamlit renders score + tabs + downloads
+```
 
 ---
 
 ## 📁 Project Structure
+```
 ai-job-application-assistant/
 ├── backend/
 │   ├── config/
@@ -62,6 +65,7 @@ ai-job-application-assistant/
 ├── .env.example
 ├── .gitignore
 └── README.md
+```
 
 ---
 
@@ -96,7 +100,9 @@ cp .env.example .env
 ```
 
 Add `.env`:
+```
 OPENAI_API_KEY=your_key_here
+```
 
 Run with Docker Compose:
 ```bash
@@ -126,14 +132,14 @@ python -m streamlit run app.py
 # Push backend to ECR
 aws ecr create-repository --repository-name job-assistant-backend
 docker build -t job-assistant-backend ./backend
-docker tag job-assistant-backend:latest <account_id>.dkr.ecr.<region>.amazonaws.com/job-assistant-backend:latest
-docker push <account_id>.dkr.ecr.<region>.amazonaws.com/job-assistant-backend:latest
+docker tag job-assistant-backend:latest .dkr.ecr..amazonaws.com/job-assistant-backend:latest
+docker push .dkr.ecr..amazonaws.com/job-assistant-backend:latest
 
 # Push frontend to ECR
 aws ecr create-repository --repository-name job-assistant-frontend
 docker build -t job-assistant-frontend ./frontend
-docker tag job-assistant-frontend:latest <account_id>.dkr.ecr.<region>.amazonaws.com/job-assistant-frontend:latest
-docker push <account_id>.dkr.ecr.<region>.amazonaws.com/job-assistant-frontend:latest
+docker tag job-assistant-frontend:latest .dkr.ecr..amazonaws.com/job-assistant-frontend:latest
+docker push .dkr.ecr..amazonaws.com/job-assistant-frontend:latest
 
 # Store secret
 aws secretsmanager create-secret \
