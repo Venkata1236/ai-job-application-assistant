@@ -11,7 +11,6 @@ from dotenv import load_dotenv
 from crewai import Agent, Task, Crew, Process
 from langchain_openai import ChatOpenAI
 
-# ── Load environment variables ─────────────────────────────────────
 load_dotenv()
 
 # ── Load YAML configs ──────────────────────────────────────────────
@@ -23,11 +22,13 @@ with open(CONFIG_DIR / "agents.yaml", "r") as f:
 with open(CONFIG_DIR / "tasks.yaml", "r") as f:
     TASKS_CONFIG = yaml.safe_load(f)
 
-# ── Shared LLM ─────────────────────────────────────────────────────
-llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3)
-
 
 # ── Helpers ────────────────────────────────────────────────────────
+def _get_llm():
+    """Lazy load LLM — only created when first called."""
+    return ChatOpenAI(model="gpt-4o-mini", temperature=0.3)
+
+
 def _build_agent(agent_key: str) -> Agent:
     """Instantiate a CrewAI Agent from YAML config."""
     cfg = AGENTS_CONFIG[agent_key]
@@ -35,7 +36,7 @@ def _build_agent(agent_key: str) -> Agent:
         role=cfg["role"],
         goal=cfg["goal"],
         backstory=cfg["backstory"],
-        llm=llm,
+        llm=_get_llm(),
         verbose=cfg.get("verbose", False),
         allow_delegation=cfg.get("allow_delegation", False)
     )
