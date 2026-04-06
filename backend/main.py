@@ -10,6 +10,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from models import AnalysisResponse
 from workflow import build_workflow
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+os.environ["OTEL_SDK_DISABLED"] = "true"
+os.environ["CREWAI_TELEMETRY_OPT_OUT"] = "true"
+
 # ── Load environment variables ─────────────────────────────────────
 load_dotenv()
 
