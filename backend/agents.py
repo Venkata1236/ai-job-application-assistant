@@ -7,8 +7,12 @@ import re
 import json
 import yaml
 from pathlib import Path
+from dotenv import load_dotenv
 from crewai import Agent, Task, Crew, Process
 from langchain_openai import ChatOpenAI
+
+# ── Load environment variables ─────────────────────────────────────
+load_dotenv()
 
 # ── Load YAML configs ──────────────────────────────────────────────
 CONFIG_DIR = Path(__file__).parent / "config"
