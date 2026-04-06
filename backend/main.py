@@ -1,16 +1,17 @@
 """
 main.py
 FastAPI application entry point.
-Exposes /health and /analyze endpoints.
-Orchestrates the full LangGraph + CrewAI pipeline.
 """
 import io
 import pdfplumber
+from dotenv import load_dotenv
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from models import AnalysisResponse
 from workflow import build_workflow
 
+# ── Load environment variables ─────────────────────────────────────
+load_dotenv()
 
 app = FastAPI(
     title="AI Job Application Assistant",
