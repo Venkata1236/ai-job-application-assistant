@@ -446,6 +446,9 @@ with right:
                             sc, vc, vt, grad = "#f87171", "v-weak", "◇ Needs Work", "linear-gradient(90deg,#f87171,#ef4444)"
 
                         # ── 1. Score Card ──────────────────────
+                        fit_data_temp = parse_json_block(data["fit_analysis"])
+                        kw_data_temp = parse_json_block(data["keywords"])
+
                         st.markdown(f"""
                         <div class="score-card">
                             <div class="score-top">
@@ -460,6 +463,24 @@ with right:
                             </div>
                             <div class="bar-bg">
                                 <div class="bar-fill" style="width:{score}%;background:{grad}"></div>
+                            </div>
+                            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px;">
+                                <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:14px;text-align:center;">
+                                    <div style="font-size:22px;font-weight:900;font-family:'Playfair Display',serif;color:{sc}">{score}</div>
+                                    <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(232,232,240,0.35);margin-top:4px;">Fit Score</div>
+                                </div>
+                                <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:14px;text-align:center;">
+                                    <div style="font-size:22px;font-weight:900;font-family:'Playfair Display',serif;color:#4ade80">{len(fit_data_temp.get("matching_skills", []))}</div>
+                                    <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(232,232,240,0.35);margin-top:4px;">Skills Match</div>
+                                </div>
+                                <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:14px;text-align:center;">
+                                    <div style="font-size:22px;font-weight:900;font-family:'Playfair Display',serif;color:#f87171">{len(fit_data_temp.get("gaps", []))}</div>
+                                    <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(232,232,240,0.35);margin-top:4px;">Skill Gaps</div>
+                                </div>
+                                <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:14px;text-align:center;">
+                                    <div style="font-size:22px;font-weight:900;font-family:'Playfair Display',serif;color:#fbbf24">{len(kw_data_temp.get("critical_missing", []))}</div>
+                                    <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(232,232,240,0.35);margin-top:4px;">Critical KW</div>
+                                </div>
                             </div>
                         </div>
                         """, unsafe_allow_html=True)
