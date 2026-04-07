@@ -23,6 +23,7 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
 
+:root { color-scheme: dark !important; }
 *, *::before, *::after { box-sizing: border-box; }
 .stApp { background: #08080f; font-family: 'DM Sans', sans-serif; color: #e8e8f0; }
 #MainMenu, footer, header { visibility: hidden; }
@@ -76,23 +77,44 @@ st.markdown("""
     content: ''; flex: 1; height: 1px; background: rgba(255,215,100,0.12);
 }
 
-/* Inputs */
-.stTextArea textarea {
+/* ── Textarea — force text visible in all Streamlit versions ── */
+.stTextArea textarea,
+div[data-testid="stTextArea"] textarea,
+div[data-baseweb="textarea"] textarea,
+div[data-baseweb="textarea"] > div > textarea,
+textarea {
     background: rgba(255,255,255,0.05) !important;
+    background-color: rgba(255,255,255,0.05) !important;
     border: 1.5px solid rgba(255,255,255,0.1) !important;
-    border-radius: 14px !important; color: #e8e8f0 !important;
+    border-radius: 14px !important;
+    color: #e8e8f0 !important;
     -webkit-text-fill-color: #e8e8f0 !important;
     font-family: 'DM Sans', sans-serif !important;
-    font-size: 14px !important; line-height: 1.7 !important;
-    padding: 16px !important; caret-color: #ffd764 !important;
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+    padding: 16px !important;
+    caret-color: #ffd764 !important;
     opacity: 1 !important;
 }
-.stTextArea textarea:focus {
+.stTextArea textarea:focus,
+div[data-testid="stTextArea"] textarea:focus {
     border-color: rgba(255,215,100,0.5) !important;
     box-shadow: 0 0 0 3px rgba(255,215,100,0.08) !important;
+    color: #e8e8f0 !important;
+    -webkit-text-fill-color: #e8e8f0 !important;
 }
-.stTextArea textarea::placeholder { color: rgba(232,232,240,0.25) !important; }
-.stTextArea label { color: rgba(232,232,240,0.6) !important; font-size: 13px !important; }
+.stTextArea textarea::placeholder,
+div[data-testid="stTextArea"] textarea::placeholder {
+    color: rgba(232,232,240,0.25) !important;
+    -webkit-text-fill-color: rgba(232,232,240,0.25) !important;
+    opacity: 1 !important;
+}
+.stTextArea label,
+div[data-testid="stTextArea"] label {
+    color: rgba(232,232,240,0.6) !important;
+    font-size: 13px !important;
+    -webkit-text-fill-color: rgba(232,232,240,0.6) !important;
+}
 
 .stFileUploader > div {
     background: rgba(255,255,255,0.03) !important;
