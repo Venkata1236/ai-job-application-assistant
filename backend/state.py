@@ -1,7 +1,6 @@
 """
 state.py
-Defines the LangGraph TypedDict state schema
-shared across all workflow nodes.
+LangGraph TypedDict state schema — all workflow node outputs.
 """
 from typing import TypedDict, List
 
@@ -14,4 +13,7 @@ class JobAppState(TypedDict):
     fit_analysis: str
     cover_letter: str
     resume_suggestions: str
+    interview_questions: str
+    linkedin_summary: str
+    keywords: str
     final_report: str
