@@ -81,9 +81,11 @@ st.markdown("""
     background: rgba(255,255,255,0.05) !important;
     border: 1.5px solid rgba(255,255,255,0.1) !important;
     border-radius: 14px !important; color: #e8e8f0 !important;
+    -webkit-text-fill-color: #e8e8f0 !important;
     font-family: 'DM Sans', sans-serif !important;
     font-size: 14px !important; line-height: 1.7 !important;
     padding: 16px !important; caret-color: #ffd764 !important;
+    opacity: 1 !important;
 }
 .stTextArea textarea:focus {
     border-color: rgba(255,215,100,0.5) !important;
