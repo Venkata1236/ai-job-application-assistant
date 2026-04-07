@@ -1,6 +1,5 @@
 # tasks.yaml
-# CrewAI task definitions — descriptions use {variables}
-# injected at runtime from LangGraph state
+# CrewAI task definitions — descriptions use {variables} injected at runtime
 
 fit_analysis_task:
   description: >
@@ -19,13 +18,13 @@ fit_analysis_task:
     Return ONLY a valid JSON object with these exact keys:
     {{
       "score": <integer 0-100>,
-      "matching_skills": [<list of matching skills>],
-      "gaps": [<list of missing skills or requirements>],
-      "assessment": "<2-3 sentence overall summary>"
+      "matching_skills": [<list of 5-8 matching skills>],
+      "gaps": [<list of 3-6 missing skills or requirements>],
+      "assessment": "<3-4 sentence overall summary>"
     }}
   expected_output: >
     A valid JSON object containing score (0-100), matching_skills list,
-    gaps list, and a 2-3 sentence assessment summary.
+    gaps list, and a 3-4 sentence assessment summary.
   agent: hr_analyst
 
 cover_letter_task:
@@ -43,17 +42,17 @@ cover_letter_task:
 
     Write a professional 3-paragraph cover letter:
     1. Opening — Hook with enthusiasm and strongest relevant qualification
-    2. Body — 2-3 key achievements that directly match job requirements
-    3. Closing — Express interest and availability
+    2. Body — 2-3 key achievements that directly match job requirements with metrics
+    3. Closing — Express interest and call to action
 
     Rules:
     - Under 350 words
     - No placeholder text like [Your Name] or [Company Name]
     - No date or address headers
     - Write from the candidate's perspective
+    - End with candidate's name and contact from CV
   expected_output: >
-    A professional 3-paragraph cover letter under 350 words,
-    tailored to the specific job and candidate background.
+    A professional 3-paragraph cover letter under 350 words.
   agent: cover_letter_writer
 
 resume_suggestions_task:
@@ -70,14 +69,109 @@ resume_suggestions_task:
     {gaps}
 
     Provide exactly 6 numbered, actionable suggestions.
-    For each suggestion, reference actual content from the resume.
+    Each suggestion must reference actual content from the resume.
     Cover: missing keywords, skills to highlight, bullet rewrites,
-    quantification, and ATS optimization.
+    quantification, ATS optimization, and formatting tips.
+
+    Format each suggestion as:
+    1. [Category]: Specific suggestion
+    Example: 1. Keywords: Add "LangGraph" and "multi-agent systems" to your skills section
+  expected_output: >
+    Exactly 6 specific numbered resume improvement suggestions.
+  agent: resume_coach
+
+interview_questions_task:
+  description: >
+    Generate the 7 most likely interview questions for this role and candidate.
+
+    Job Description:
+    {jd_text}
+
+    Candidate Background:
+    {cv_text}
+
+    Fit Analysis:
+    {fit_analysis}
+
+    Generate exactly 7 interview questions split into:
+    - 3 Technical questions based on the role's requirements
+    - 2 Behavioral questions (STAR format situations)
+    - 2 Gap-based questions (addressing weaknesses in the profile)
+
+    For each question, provide:
+    - The question itself
+    - Why they'll ask it (1 sentence)
+    - A 2-sentence tip on how to answer it well
 
     Format:
-    1. [Action]: [Specific suggestion referencing resume content]
-    2. ...and so on
+    TECHNICAL
+    Q1: [question]
+    Why: [reason]
+    Tip: [how to answer]
+
+    Q2: ...
+
+    BEHAVIORAL
+    Q4: ...
+
+    GAP-BASED
+    Q6: ...
   expected_output: >
-    Exactly 6 specific numbered resume improvement suggestions,
-    each referencing actual content from the candidate's resume.
-  agent: resume_coach
+    7 interview questions with context and tips, split into Technical,
+    Behavioral, and Gap-Based categories.
+  agent: interview_coach
+
+linkedin_summary_task:
+  description: >
+    Write an optimized LinkedIn headline and About section summary.
+
+    Candidate Background:
+    {cv_text}
+
+    Target Role:
+    {jd_text}
+
+    Write:
+    1. HEADLINE: A compelling 120-character LinkedIn headline optimized for
+       the target role. Use the format: [Role] | [Key Skill] | [Value Proposition]
+
+    2. ABOUT SUMMARY: A 3-paragraph LinkedIn About section (300-400 words) that:
+       - Opens with a powerful hook sentence
+       - Highlights top 3 achievements with metrics
+       - Ends with what kind of opportunities they're seeking
+       - Uses relevant keywords for the target role
+       - Sounds human, not robotic
+
+    Format:
+    HEADLINE:
+    [headline text]
+
+    ABOUT:
+    [about text]
+  expected_output: >
+    A LinkedIn headline under 120 characters and a 300-400 word About section.
+  agent: linkedin_writer
+
+keywords_task:
+  description: >
+    Extract and categorize ATS keywords from the job description.
+    Check which are present and missing in the candidate's CV.
+
+    Job Description:
+    {jd_text}
+
+    Candidate CV:
+    {cv_text}
+
+    Return ONLY a valid JSON object with these exact keys:
+    {{
+      "present": [<list of 8-12 important keywords FOUND in CV>],
+      "missing": [<list of 6-10 important keywords NOT in CV>],
+      "critical_missing": [<list of 3-5 most critical missing keywords>]
+    }}
+
+    Keywords should be: technologies, tools, frameworks, methodologies,
+    certifications, and role-specific terms from the JD.
+  expected_output: >
+    A valid JSON object with present, missing, and critical_missing keyword lists.
+  agent: keywords_extractor
