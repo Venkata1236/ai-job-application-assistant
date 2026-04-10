@@ -5,7 +5,7 @@ job description using OpenAI embeddings.
 """
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 
 def build_retriever(jd_text: str, cv_text: str):
